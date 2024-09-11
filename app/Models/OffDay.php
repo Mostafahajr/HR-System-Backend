@@ -9,11 +9,21 @@ class OffDay extends Model
 {
     use HasFactory;
 
+    // Fillable attributes
     protected $fillable = [
         'date',
-        'type', // e.g., public holiday, weekend
         'description',
-        'weekend',
-        'day',
     ];
+
+    // Relationship with OffDayType
+    public function types()
+    {
+        return $this->belongsToMany(OffDayType::class, 'off_day_off_day_type');
+    }
+
+    // Relationship with VacationDay
+    public function vacationDays()
+    {
+        return $this->hasMany(VacationDay::class);
+    }
 }
