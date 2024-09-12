@@ -10,12 +10,8 @@ class CreateVacationDaysTable extends Migration
     {
         Schema::create('vacation_days', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('off_day_id');
-            $table->date('vacation_date');
+            $table->enum('weekend_day',['sunday','monday','tuesday','wednesday','thursday','friday','saturday']);
             $table->timestamps();
-
-
-            $table->foreign('off_day_id')->references('id')->on('off_days')->onDelete('cascade');
         });
     }
 

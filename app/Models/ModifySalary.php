@@ -11,12 +11,16 @@ class ModifySalary extends Model
 
     protected $fillable = [
         'amount',
-        'type', // Add or Decrease
+        'type',
         'date',
         'employee_id',
     ];
 
-    // Relationship to employee
+    protected $casts = [
+        'date' => 'date',
+        'amount' => 'decimal:2',
+    ];
+
     public function employee()
     {
         return $this->belongsTo(Employee::class);

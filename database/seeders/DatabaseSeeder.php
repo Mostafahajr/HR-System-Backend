@@ -9,6 +9,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        $this->call(CombinedSeeder::class);
+        $this->call([
+            DepartmentSeeder::class,
+            EmployeeSeeder::class,
+            GroupTypeSeeder::class,
+            PrivilegeSeeder::class,
+            GroupPriviledgeSeeder::class,
+            UserSeeder::class,
+            VacationDaySeeder::class,
+            OffDaySeeder::class,
+            AttendanceSeeder::class
+        ]);
     }
 }

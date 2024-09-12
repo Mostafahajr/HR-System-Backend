@@ -12,16 +12,31 @@ class EmployeeFactory extends Factory
 
     public function definition()
     {
+        $minDOB = (new \DateTime())->modify('-20 years');
+        $dob = $this->faker->dateTimeBetween('-100 years', $minDOB->format('Y-m-d'));
+
+        $minDate = \DateTime::createFromFormat('m/d/Y', '09/01/2024');
+        $dateOfContract = $this->faker->dateTimeBetween($minDate);
+
+        $departmentId = Department::inRandomOrder()->first()->id;
+
+        $currentDate = $this->faker->date;
+        $arrivalTime = $currentDate . ' 09:00:00';
+        $leaveTime = $currentDate . ' 17:00:00';
+
         return [
             'name' => $this->faker->name,
             'address' => $this->faker->address,
             'phone_number' => $this->faker->phoneNumber,
-            'gender' => $this->faker->randomElement(['Male', 'Female']),
-            'DOB' => $this->faker->date,
+            'gender' => $this->faker->randomElement(['male', 'female']),
+            'DOB' => $dob->format('Y-m-d'),
             'nationality' => $this->faker->country,
-            'salary' => $this->faker->numberBetween(30000, 100000),
-            'date_of_contract' => $this->faker->date,
-            'department_id' => Department::factory(), // Creates a new Department record
+            'national_id' => $this->faker->numberBetween(100000000, 999999999),
+            'arrival_time' => $arrivalTime,
+            'leave_time' => $leaveTime,
+            'salary' => $this->faker->randomFloat(2, 10000, 25000),
+            'date_of_contract' => $dateOfContract->format('Y-m-d'),
+            'department_id' => $departmentId,
         ];
     }
 }

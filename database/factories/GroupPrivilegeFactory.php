@@ -1,20 +1,17 @@
 <?php
 
-namespace Database\Factories;
-
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\GroupType;
 use App\Models\Privilege;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class GroupPrivilegeFactory extends Factory
+class PrivilegeFactory extends Factory
 {
-    protected $model = \App\Models\GroupPrivilege::class;
+    protected $model = Privilege::class;
 
     public function definition()
     {
         return [
-            'group_type_id' => GroupType::factory(),
-            'privileges_id' => Privilege::factory(),
+            'page_name' => $this->faker->word,
+            'operation' => $this->faker->randomElement(['create', 'read', 'update', 'delete']),
         ];
     }
 }

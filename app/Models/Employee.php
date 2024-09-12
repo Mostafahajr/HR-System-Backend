@@ -16,25 +16,32 @@ class Employee extends Model
         'gender',
         'DOB',
         'nationality',
+        'national_id',
+        'arrival_time',
+        'leave_time',
         'salary',
         'date_of_contract',
         'department_id',
     ];
 
-    // Relationship to department
+    protected $casts = [
+        'DOB' => 'date',
+        'arrival_time' => 'datetime',
+        'leave_time' => 'datetime',
+        'date_of_contract' => 'date',
+    ];
+
     public function department()
     {
         return $this->belongsTo(Department::class);
     }
 
-    // Relationship to attendance
     public function attendances()
     {
         return $this->hasMany(Attendance::class);
     }
 
-    // Relationship to modify_salary
-    public function modifySalaries()
+    public function salaryModifications()
     {
         return $this->hasMany(ModifySalary::class);
     }

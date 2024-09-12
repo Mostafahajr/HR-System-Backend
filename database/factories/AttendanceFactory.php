@@ -12,8 +12,8 @@ class AttendanceFactory extends Factory
 
     public function definition()
     {
+        // this is a default, use the seeder instead
         return [
-            'attendance_time' => $this->faker->dateTimeBetween('-1 month ', 'now'),
             'arrival_time' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'leave_time' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'date' => $this->faker->date,

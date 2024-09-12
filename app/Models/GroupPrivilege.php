@@ -9,18 +9,19 @@ class GroupPrivilege extends Model
 {
     use HasFactory;
 
-    // Specify table name if it's different from the model name
+    // Specify table name since it's not the plural of the model name
     protected $table = 'group_privilege';
 
-    // Define the fields that can be mass-assigned
-    protected $fillable = ['group_type_id', 'privileges_id'];
+    // Define mass-assignable fields
+    protected $fillable = ['group_type_id', 'privilege_id'];
 
-    // You can also define relationships if necessary
+    // Define relationship to GroupType
     public function groupType()
     {
         return $this->belongsTo(GroupType::class);
     }
 
+    // Define relationship to Privilege
     public function privilege()
     {
         return $this->belongsTo(Privilege::class);

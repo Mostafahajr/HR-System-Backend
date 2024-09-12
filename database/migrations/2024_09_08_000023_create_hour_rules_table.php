@@ -13,13 +13,11 @@ return new class extends Migration
     {
         Schema::create('hour_rules', function (Blueprint $table) {
             $table->id();
-            $table->decimal('amount', 8, 2); // extra hour pay
-            $table->string('type'); // Add or Decrease
+            $table->enum('type',['increase','deduction']);
+            $table->integer('hour_amount');
             $table->timestamps();
         });
     }
-
-
     /**
      * Reverse the migrations.
      */

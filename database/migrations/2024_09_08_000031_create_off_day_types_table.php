@@ -9,15 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('off_days', function (Blueprint $table) {
+        Schema::create('off_day_types', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->string('type'); // e.g., public holiday, weekend
+            $table->string('name');
             $table->string('description')->nullable();
-            $table->boolean('weekend')->default(false);
-            $table->string('day')->nullable(); // e.g., Saturday, Sunday
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('off_days');
+        Schema::dropIfExists('off_day_types');
     }
 };

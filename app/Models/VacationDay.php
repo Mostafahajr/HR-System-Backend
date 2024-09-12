@@ -9,15 +9,8 @@ class VacationDay extends Model
 {
     use HasFactory;
 
-    // Fillable attributes
     protected $fillable = [
-        'off_day_id',
-        'vacation_date',
+        'weekend_day',
     ];
-
-    // Relationship with OffDay
-    public function offDay()
-    {
-        return $this->belongsTo(OffDay::class);
-    }
 }
+

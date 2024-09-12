@@ -11,23 +11,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('privileges', function (Blueprint $table) {
+        Schema::create('off_days', function (Blueprint $table) {
             $table->id();
-            $table->string('page_name');
-            $table->string('operation'); // Create, Read, Update, Delete
-            $table->unsignedBigInteger('group_type_id'); // FK to group_type
+            $table->date('date')->unique();
+            $table->string('description')->nullable();
             $table->timestamps();
-
-            $table->foreign('group_type_id')->references('id')->on('group_types')->onDelete('cascade');
         });
     }
-
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('privileges');
+        Schema::dropIfExists('off_days');
     }
 };
