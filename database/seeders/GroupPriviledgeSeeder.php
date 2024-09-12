@@ -15,9 +15,9 @@ class GroupPriviledgeSeeder extends Seeder
 
         $accessRules = [
             'Super Admins' => $pageNames,
-            'Managers' => $pageNames->slice(0, 3), 
-            'Supervisors' => $pageNames->slice(1, 2), 
-            'HR' => $pageNames->slice(2, 2), 
+            'Managers' => $pageNames->slice(0, 3),
+            'Supervisors' => $pageNames->slice(1, 2),
+            'HR' => $pageNames->slice(2, 2),
         ];
 
         foreach ($accessRules as $groupName => $pages) {
@@ -30,7 +30,7 @@ class GroupPriviledgeSeeder extends Seeder
 
             foreach ($pages as $pageName) {
                 $privilegesForPage = $privileges->where('page_name', $pageName);
-                
+
                 foreach ($privilegesForPage as $privilege) {
                     $groupType->privileges()->attach($privilege->id);
                 }
