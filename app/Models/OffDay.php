@@ -17,7 +17,10 @@ class OffDay extends Model
     protected $dates = [
         'date',
     ];
-
+    //The date field is cast to a date type, which will automatically convert it to a Carbon instance when accessed.
+    protected $casts = [
+        'date' => 'date',
+    ];
     public function offDayTypes()
     {
         return $this->belongsToMany(OffDayType::class, 'off_day_off_day_type');

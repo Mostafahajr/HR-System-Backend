@@ -13,7 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append('privilege', CheckPrivilege::class);
+        $middleware->alias([
+            'privilege' => CheckPrivilege::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
