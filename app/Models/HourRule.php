@@ -10,7 +10,7 @@ class HourRule extends Model
     use HasFactory;
 
     protected $fillable = [
-        'amount',
+        'hour_amount',
         'type',
     ];
 }

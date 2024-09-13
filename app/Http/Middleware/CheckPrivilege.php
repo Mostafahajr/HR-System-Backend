@@ -18,8 +18,11 @@ class CheckPrivilege
      * @param  string  $operation
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $page, $operation)
+    public function handle(Request $request, Closure $next, $page = null, $operation = null)
     {
+        if ($page === null || $operation === null) {
+            return $next($request);
+        }
         // Get the authenticated user
         $user = JWTAuth::parseToken()->authenticate();
 
