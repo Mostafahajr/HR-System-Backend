@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreVacationDayRequest extends FormRequest
 {
@@ -14,7 +15,11 @@ class StoreVacationDayRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'weekend_day' => 'required|in:sunday,monday,tuesday,wednesday,thursday,friday,saturday',
+            'weekend_day' => [
+                'required',
+                'in:sunday,monday,tuesday,wednesday,thursday,friday,saturday',
+                Rule::unique('vacation_days', 'weekend_day'),
+            ],
         ];
     }
 }
