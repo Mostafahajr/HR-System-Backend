@@ -35,8 +35,8 @@ class OffDaySeeder extends Seeder
             ['date' => '2025-04-25', 'description' => 'Sinai Liberation Day'],
             ['date' => '2025-05-01', 'description' => 'Labour Day'],
             ['date' => '2025-07-23', 'description' => 'Revolution Day'],
-            ['date' => '2025-08-19', 'description' => 'Eid al-Adha'], 
-            ['date' => '2025-09-28', 'description' => 'Eid al-Fitr'], 
+            ['date' => '2025-08-19', 'description' => 'Eid al-Adha'],
+            ['date' => '2025-09-28', 'description' => 'Eid al-Fitr'],
             ['date' => '2025-10-04', 'description' => 'Islamic New Year'],
         ];
 
@@ -53,7 +53,6 @@ class OffDaySeeder extends Seeder
                 'off_day_type_id' => $holidayType->id,
             ]);
         }
-
         // Fetch weekend days (Friday and Saturday) from vacation_days table
         $weekendDays = VacationDay::whereIn('weekend_day', ['friday', 'saturday'])->pluck('weekend_day');
 
