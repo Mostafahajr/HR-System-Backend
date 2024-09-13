@@ -23,6 +23,7 @@ Route::post('logout', [AuthController::class, 'logout']);
 Route::get('me', [AuthController::class, 'me'])->middleware('auth:api');
 
 // Protected routes using middleware to check privileges
-Route::middleware(['auth:api', 'privilege:admins,read'])->group(function () {
+Route::middleware(['auth:api', 'privilege:Admins,read'])->group(function () {
     Route::get('admins', [AuthController::class, 'index']);
 });
+Route::post('login', [AuthController::class, 'login']);

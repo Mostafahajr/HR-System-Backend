@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOffDayRequest;
@@ -17,24 +18,46 @@ class OffDayController extends Controller
         return OffDayResource::collection($offDays);
     }
 
-    // POST create a new off day
+    // POST create or update an off day
     public function store(StoreOffDayRequest $request)
     {
         $validatedData = $request->validated();
-        // Create the off day
-        $offDay = OffDay::create($validatedData);
-        
-        // Find or create the 'holiday' type
+
+        // Check if the 'holiday' type exists
         $holidayType = OffDayType::firstOrCreate(
             ['name' => 'holiday'],
             ['description' => 'Default holiday type']
         );
 
-        // Attach the holiday type to the off day
-        $offDay->offDayTypes()->attach($holidayType->id);
+        // Check if the off day already exists
+        $offDay = OffDay::where('date', $validatedData['date'])->first();
 
-        return new OffDayResource($offDay);
+        if ($offDay) {
+            // The off day already exists, check if it has the 'holiday' type associated
+            if ($offDay->offDayTypes->contains($holidayType->id)) {
+                // If the holiday type is already associated, block the user
+                return response()->json(['error' => 'This off day already has a holiday type associated'], 400);
+            }
+
+            // Attach the holiday type if it's not associated
+            $offDay->offDayTypes()->attach($holidayType->id);
+
+            // Update the description if provided in the request
+            if (isset($validatedData['description'])) {
+                $offDay->description = $validatedData['description'];
+                $offDay->save();
+            }
+
+            return new OffDayResource($offDay);
+        } else {
+            // Create a new off day and associate it with the holiday type
+            $offDay = OffDay::create($validatedData);
+            $offDay->offDayTypes()->attach($holidayType->id);
+
+            return new OffDayResource($offDay);
+        }
     }
+
 
     // GET single off day
     public function show($id)
@@ -46,18 +69,23 @@ class OffDayController extends Controller
     // PUT update an existing off day
     public function update(UpdateOffDayRequest $request, $id)
     {
+        // Find the off day and validate the input data
         $offDay = OffDay::findOrFail($id);
         $validatedData = $request->validated();
-        $offDay->update($validatedData);
 
-        // Ensure the 'holiday' type is still associated
-        $holidayType = OffDayType::firstOrCreate(
-            ['name' => 'holiday'],
-            ['description' => 'Default holiday type']
-        );
+        // Find the 'holiday' type
+        $holidayType = OffDayType::where('name', 'holiday')->firstOrFail();
 
-        // Sync the off day types (this will ensure only 'holiday' type is associated)
-        $offDay->offDayTypes()->sync([$holidayType->id]);
+        // Check if the 'holiday' type is already associated in the pivot table
+        $alreadyHasHolidayType = $offDay->offDayTypes()->where('off_day_type_id', $holidayType->id)->exists();
+
+        if (!$alreadyHasHolidayType) {
+            // If it's not in the pivot table, attach it
+            $offDay->offDayTypes()->attach($holidayType->id);
+        }
+
+        // Update the off day's description
+        $offDay->update(['description' => $validatedData['description']]);
 
         return new OffDayResource($offDay);
     }

@@ -14,7 +14,7 @@ class StoreOffDayRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date|after:today|unique:off_days,date',
+            'date' => 'required|date|after:today',
             'description' => 'nullable|string',
         ];
     }
