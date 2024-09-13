@@ -18,10 +18,10 @@ return new class extends Migration
             // address can be optimized later
             $table->string('address');
             $table->string('phone_number');
-            $table->enum('gender',['male','female']);
+            $table->enum('gender', ['male', 'female']);
             $table->date('DOB');
             $table->string('nationality');
-            $table->integer('national_id');
+            $table->integer('national_id')->unique();
             $table->dateTime('arrival_time');
             $table->dateTime('leave_time');
             $table->decimal('salary', 10, 2);

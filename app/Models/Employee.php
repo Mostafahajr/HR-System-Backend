@@ -16,12 +16,13 @@ class Employee extends Model
         'gender',
         'DOB',
         'nationality',
-        'national_id',
-        'arrival_time',
-        'leave_time',
         'salary',
         'date_of_contract',
         'department_id',
+        'national_id',
+        'arrival_time',
+        'leave_time',
+        'department_id'
     ];
 
     protected $casts = [
