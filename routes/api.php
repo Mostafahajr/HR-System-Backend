@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -17,6 +18,8 @@ Route::apiResource('hour-rules', HourRulesController::class);
 Route::apiResource('vacation-days', VacationDayController::class);
 Route::apiResource('off-day-types', OffDayTypeController::class);
 Route::apiResource('off-days', OffDayController::class);
+
+Route::apiResource('attendances',AttendanceController::class);
 
 
 Route::apiResource('employees', EmployeeController::class);
