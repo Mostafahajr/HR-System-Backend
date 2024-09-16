@@ -24,7 +24,6 @@ class UpdateUserRequest extends FormRequest
         $userId = $this->route('id');
         return [
             "name"=>['required','regex:/^[A-Za-z]{3,}(?:[ -][A-Za-z]{3,})*$/'],
-            "username"=>['required','regex:/^[A-Za-z0-9]{3,}(?:[ -][A-Za-z0-9]{3,})*$/'],
             "email"=>['required','regex:/^\w+([\.-]?\w)+@\w+([\.]?\w)+(\.[a-zA-Z]{2,3})+$/'],
             "password"=>['required','regex:/^(?=.[A-Z])(?=.[a-z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/'],
             "group_type_id"=>['required']
