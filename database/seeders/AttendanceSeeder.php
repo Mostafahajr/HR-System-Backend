@@ -12,19 +12,19 @@ class AttendanceSeeder extends Seeder
 {
     public function run(): void
     {
-        // Define the start date and the end date (35 days later)
-        $startDate = Carbon::createFromDate(2024, 9, 1);
-        $endDate = (clone $startDate)->addDays(34); // 35 days span
+        // Define the start date and the end date for August 2024
+        $startDate = Carbon::createFromDate(2024, 8, 1);
+        $endDate = Carbon::createFromDate(2024, 8, 31); // End date is the last day of August
 
         // Get all employees
         $employees = Employee::all();
 
-        // Fetch all off days within the 35-day range
+        // Fetch all off days within the month of August
         $offDays = OffDay::whereBetween('date', [$startDate->toDateString(), $endDate->toDateString()])
             ->pluck('date')
             ->toArray();
 
-        // Loop through each day within the 35-day period
+        // Loop through each day within August
         $currentDate = clone $startDate;
         while ($currentDate->lte($endDate)) {
             // Skip the date if it is in the off_days table
@@ -35,15 +35,22 @@ class AttendanceSeeder extends Seeder
 
             // Create attendance records for all employees on workdays
             foreach ($employees as $employee) {
-                // Generate randomized arrival time between 08:00 AM and 10:00 AM
-                $arrivalTime = Carbon::createFromTime(8, 0)->addMinutes(rand(0, 120)); // 0 to 120 minutes added
+                // Generate randomized arrival time between 07:00 AM and 10:00 AM
+                $arrivalTime = Carbon::create($currentDate->year, $currentDate->month, $currentDate->day, 7, 0)
+                    ->addMinutes(rand(0, 180)); // 0 to 120 minutes added
 
-                // Generate randomized leave time between 05:00 PM and 08:00 PM
-                $leaveTime = Carbon::createFromTime(17, 0)->addMinutes(rand(0, 180)); // 0 to 180 minutes added
+                // Generate randomized leave time between 05:00 PM and 09:00 PM
+                $leaveTime = Carbon::create($currentDate->year, $currentDate->month, $currentDate->day, 17, 0)
+                    ->addMinutes(rand(0, 240)); // 0 to 180 minutes added
+
+                // Ensure leave time is after arrival time
+                if ($leaveTime->lt($arrivalTime)) {
+                    $leaveTime = $arrivalTime->copy()->addHours(8); // Default to 8 hours if leave time is before arrival time
+                }
 
                 Attendance::create([
-                    'arrival_time' => $arrivalTime, // Randomized arrival time
-                    'leave_time' => $leaveTime, // Randomized leave time
+                    'arrival_time' => $arrivalTime,
+                    'leave_time' => $leaveTime,
                     'date' => $currentDate->toDateString(),
                     'employee_id' => $employee->id,
                 ]);

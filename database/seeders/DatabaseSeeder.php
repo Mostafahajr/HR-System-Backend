@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             VacationDaySeeder::class,
             OffDaySeeder::class,
-            AttendanceSeeder::class
+            AttendanceSeeder::class,
+            HourRuleSeeder::class,
         ]);
     }
 }

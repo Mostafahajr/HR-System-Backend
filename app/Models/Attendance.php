@@ -15,7 +15,12 @@ class Attendance extends Model
         'date',
         'employee_id',
     ];
-
+    protected $casts = [
+        'arrival_time' => 'datetime',
+        'leave_time' => 'datetime',
+        'date' => 'date',
+    ];
+    
     // Relationship to employee
     public function employee()
     {

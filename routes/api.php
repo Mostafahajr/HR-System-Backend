@@ -9,8 +9,10 @@ use App\Http\Controllers\HourRulesController;
 use App\Http\Controllers\VacationDayController;
 use App\Http\Controllers\OffDayTypeController;
 use App\Http\Controllers\OffDayController;
+use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GroupsAndPermisionsController;
+
 
 Route::apiResource('users',UserController::class);
 Route::apiResource('departments', DepartmentController::class);
@@ -29,5 +31,17 @@ Route::middleware('auth:api')->group(function () {
         Route::get('privileges', [GroupsAndPermisionsController::class, 'index']);
     });
 
+
+// Protected routes using middleware to check privileges
+Route::middleware(['auth:api', 'privilege:Admins,read'])->group(function () {
+    Route::get('admins', [AuthController::class, 'index']);
+});
+Route::post('login', [AuthController::class, 'login']);
+
+//return calculated salary for all employees API
+Route::get('/salaries/calculate', [SalaryController::class, 'calculate']);
+///api/salaries/calculate?month=9&year=2024
+
     // Add other routes that need authentication and privilege checks here
 });
+
