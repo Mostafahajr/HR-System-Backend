@@ -34,12 +34,12 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        //
-        $attend = Attendance::findOrFail($id);
-        return new AttendanceResource($attend);
-    }
+    // public function show($id)
+    // {
+    //     //
+    //     $attend = Attendance::findOrFail($id);
+    //     return new AttendanceResource($attend);
+    // }
 
     /**
      * Update the specified resource in storage.

@@ -16,10 +16,11 @@ class AttendanceResource extends JsonResource
     {
         return [
             "id"=>$this->id,
-            "attendance_time"=>$this->attendance_time,
+            
             "arrival_time"=>$this->arrival_time,
             "leave_time"=>$this->leave_time,
             "date"=>$this->date,
+            "employee_id"=>$this->employee->id,
             "employee_name"=>$this->employee->name,
             "department"=>$this->employee->department->department_name
         ];
