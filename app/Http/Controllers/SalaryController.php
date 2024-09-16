@@ -17,14 +17,19 @@ class SalaryController extends Controller
         $year = $request->input('year', Carbon::now()->year);  // Default to current year if not provided
         $month = $request->input('month', Carbon::now()->format('m'));  // Default to current month if not provided
 
-        // Check if an employee_id is provided
+        // Check if an employee_id or department_name is provided
         $employeeId = $request->input('employee_id');
-        // Get employees, either all or the specific one if employee_id is provided
+        $departmentName = $request->input('department_name');
+        // Get employees based on employee_id or department_name
+        $employees = Employee::query();
         if ($employeeId) {
-            $employees = Employee::where('id', $employeeId)->get();  // Fetch only the employee with given id
-        } else {
-            $employees = Employee::all();  // Fetch all employees
+            $employees->where('id', $employeeId);
+        } elseif ($departmentName) {
+            $employees->join('departments', 'employees.department_id', '=', 'departments.id')
+                ->where('departments.department_name', $departmentName)
+                ->select('employees.*');
         }
+        $employees = $employees->get();
 
         // Fetch the attendance records for the given month and year using 'like' query
         $attendances = Attendance::where('date', 'like', "{$year}-{$month}%")
@@ -81,13 +86,18 @@ class SalaryController extends Controller
             ];
 
             // Track attendance dates
-            $attendanceDates = isset($attendances[$employee->id]) ? $attendances[$employee->id]->pluck('date')->map(fn ($date) => $date->format('Y-m-d'))->toArray() : [];
+            $attendanceDates = isset($attendances[$employee->id])
+                ? $attendances[$employee->id]->filter(function ($attendance) {
+                    // Filter out the attendances where both arrival_time and leave_time are not null
+                    return $attendance->arrival_time !== null && $attendance->leave_time !== null;
+                })->pluck('date')->map(fn ($date) => $date->format('Y-m-d'))->toArray()
+                : [];
 
             // Loop through attendance records of the employee
             if (isset($attendances[$employee->id])) {
                 foreach ($attendances[$employee->id] as $attendance) {
-                    // Check if the attendance date is not an off day
-                    if (!in_array($attendance->date->format('Y-m-d'), $offDays)) {
+                    // Check if the attendance date is not an off day or has null arrival times
+                    if (!in_array($attendance->date->format('Y-m-d'), $offDays) && $attendance->arrival_time != null && $attendance->leave_time != null) {
                         $this->processAttendance($attendance, $employee, $salaryPerHour, $result[$employee->id]);
                     }
                 }
@@ -164,7 +174,6 @@ class SalaryController extends Controller
 
         // Update attended days
         $employeeResult['attended_days']++;
-
         // Calculate penalty minutes if arrival is later than the contract time
         if ($arrivalTime->greaterThan($contractArrival)) {
             $penaltyMinutes = $contractArrival->diffInMinutes($arrivalTime);
@@ -176,7 +185,6 @@ class SalaryController extends Controller
             $bonusMinutes = $contractLeave->diffInMinutes($leaveTime);
             $employeeResult['total_bonus_minutes'] += $bonusMinutes;
         }
-
         // Add details for the specific date
         $employeeResult['daily_records'][] = [
             'date' => $attendance->date->format('Y-m-d'),
@@ -194,9 +202,6 @@ class SalaryController extends Controller
     {
         $bonusRule = HourRule::where('type', 'increase')->first();
         $penaltyRule = HourRule::where('type', 'deduction')->first();
-
-        // Add 8 hour penalty for each absent day
-        $employeeResult['total_penalty_minutes'] += $employeeResult['absent_days'] * 8 * 60;
 
         $employeeResult['total_bonus_egp'] = ($employeeResult['total_bonus_minutes'] * $bonusRule->hour_amount / 60) * $salaryPerHour;
         $employeeResult['total_penalty_egp'] = ($employeeResult['total_penalty_minutes'] * $penaltyRule->hour_amount / 60) * $salaryPerHour;
