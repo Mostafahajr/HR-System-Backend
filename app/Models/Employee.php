@@ -27,10 +27,11 @@ class Employee extends Model
 
     protected $casts = [
         'DOB' => 'date',
-        'arrival_time' => 'datetime',
-        'leave_time' => 'datetime',
+        'arrival_time' => 'datetime:H:i:s',
+        'leave_time' => 'datetime:H:i:s',
         'date_of_contract' => 'date',
     ];
+
 
     public function department()
     {

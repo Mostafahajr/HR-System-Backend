@@ -9,7 +9,7 @@ use App\Http\Controllers\HourRulesController;
 use App\Http\Controllers\VacationDayController;
 use App\Http\Controllers\OffDayTypeController;
 use App\Http\Controllers\OffDayController;
-
+use App\Http\Controllers\SalaryController;
 
 Route::apiResource('users',UserController::class);
 Route::apiResource('departments', DepartmentController::class);
@@ -33,3 +33,7 @@ Route::middleware(['auth:api', 'privilege:Admins,read'])->group(function () {
     Route::get('admins', [AuthController::class, 'index']);
 });
 Route::post('login', [AuthController::class, 'login']);
+
+//return calculated salary for all employees API
+Route::get('/salaries/calculate', [SalaryController::class, 'calculate']);
+///api/salaries/calculate?month=9&year=2024
