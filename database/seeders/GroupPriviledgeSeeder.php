@@ -11,7 +11,7 @@ class GroupPriviledgeSeeder extends Seeder
     public function run(): void
     {
         $privileges = Privilege::all();
-        $pageNames = $privileges->pluck('page_name')->unique()->values(); // Get unique page names
+        $pageNames = $privileges->pluck('page_name')->unique()->values();
 
         $accessRules = [
             'Super Admins' => $pageNames,

@@ -14,9 +14,13 @@ class Privilege extends Model
         'operation',
     ];
 
+    /**
+     * Define the many-to-many relationship between Privileges and GroupTypes.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function groupTypes()
     {
         return $this->belongsToMany(GroupType::class, 'group_privilege')->withTimestamps();
     }
 }
-
