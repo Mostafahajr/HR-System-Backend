@@ -9,7 +9,7 @@ class PrivilegeSeeder extends Seeder
 {
     public function run()
     {
-        $pageNames = ['Admins', 'Employees', 'Groups_and_Permissions', 'Salaries'];
+        $pageNames = ['Admins','Employees','Groups_and_Permissions','Salary_Related_Settings','Weekend_Settings','Official_Holidays','Attendance_Reports','Salaries'];
         $operations = ['create', 'read', 'update', 'delete'];
 
         foreach ($pageNames as $pageName) {

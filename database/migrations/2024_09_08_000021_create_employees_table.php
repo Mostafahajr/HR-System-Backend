@@ -22,8 +22,8 @@ return new class extends Migration
             $table->date('DOB');
             $table->string('nationality');
             $table->integer('national_id')->unique();
-            $table->dateTime('arrival_time');
-            $table->dateTime('leave_time');
+            $table->time('arrival_time'); // Changed from dateTime to time
+            $table->time('leave_time');   // Changed from dateTime to time
             $table->decimal('salary', 10, 2);
             $table->date('date_of_contract');
             $table->foreignIdFor(Department::class)->nullable();

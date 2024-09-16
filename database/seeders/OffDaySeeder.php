@@ -26,6 +26,7 @@ class OffDaySeeder extends Seeder
 
         // Array of official and religious holidays in Egypt from 09/01/2024 up to 09/01/2025
         $holidays = [
+            ['date' => '2024-08-21', 'description' => 'fake holiday'],
             ['date' => '2024-09-21', 'description' => 'Hijri New Year'],
             ['date' => '2024-10-06', 'description' => 'Armed Forces Day'],
             ['date' => '2024-10-15', 'description' => 'Mawlid al-Nabi'],
@@ -57,8 +58,8 @@ class OffDaySeeder extends Seeder
         $weekendDays = VacationDay::whereIn('weekend_day', ['friday', 'saturday'])->pluck('weekend_day');
 
         // Define the start date and 35-day range
-        $startDate = Carbon::create(2024, 9, 1);
-        $endDate = $startDate->copy()->addDays(34); // 35 days span
+        $startDate = Carbon::create(2024, 8, 1);
+        $endDate = $startDate->copy()->addDays(61); // 35 days span
 
         // Loop through each date in the 35-day span
         for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
