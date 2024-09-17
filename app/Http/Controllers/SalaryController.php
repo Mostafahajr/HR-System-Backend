@@ -47,7 +47,7 @@ class SalaryController extends Controller
         // Get today's date
         $today = Carbon::today();
 
-        //variable to store the wroking days in case you are computing the current month
+        // Variable to store the working days in case you are computing the current month
         $currentMonth = null;
 
         // If the given month is the current month, find how many working days so far
@@ -105,7 +105,13 @@ class SalaryController extends Controller
 
             // Calculate absent days and add penalty for each absent day
             $allMonthDays = collect(range(1, $totalDaysInMonth))->map(fn ($day) => Carbon::createFromDate($year, $month, $day)->format('Y-m-d'));
-            $absentDays = $allMonthDays->diff($attendanceDates)->diff($offDays);
+
+            // If processing for the current month, exclude days from today onwards
+            if ($year == $today->year && $month == $today->month) {
+                $absentDays = $allMonthDays->diff($attendanceDates)->diff($offDays)->filter(fn ($day) => Carbon::parse($day)->lt($today));
+            } else {
+                $absentDays = $allMonthDays->diff($attendanceDates)->diff($offDays);
+            }
 
             // Add absent days to the daily records with penalty
             foreach ($absentDays as $absentDay) {
@@ -134,6 +140,8 @@ class SalaryController extends Controller
 
         return response()->json($result, 200);
     }
+
+
 
 
     // Helper function to calculate working days
