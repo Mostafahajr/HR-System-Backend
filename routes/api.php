@@ -25,7 +25,7 @@ Route::apiResource('off-day-types', OffDayTypeController::class);
 Route::apiResource('off-days', OffDayController::class);
 
 
-Route::apiResource('attendances',AttendanceController::class);
+Route::apiResource('attendance',AttendanceController::class);
 Route::get('home',[DashController::class,'getStatic']);
 
 

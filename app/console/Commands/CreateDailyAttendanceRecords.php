@@ -16,3 +16,5 @@ class CreateDailyAttendanceRecords extends Command
         $this->info('Daily attendance records created successfully.');
     }
 }
+/* run this command */
+/* php artisan attendance:create-daily-records */
