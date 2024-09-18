@@ -11,6 +11,7 @@ use App\Http\Controllers\OffDayTypeController;
 use App\Http\Controllers\OffDayController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupsAndPermissionsController;
 use App\Http\Controllers\PermissionsController;
@@ -25,7 +26,7 @@ Route::apiResource('off-days', OffDayController::class);
 
 
 Route::apiResource('attendances',AttendanceController::class);
-
+Route::get('home',[DashController::class,'getStatic']);
 
 
 Route::apiResource('employees', EmployeeController::class);
@@ -38,7 +39,7 @@ Route::post('privileges',[PermissionsController::class, 'store']);
 Route::get('privileges/{id}',[PermissionsController::class, 'show']);
 Route::put('privileges/{id}',[PermissionsController::class, 'update']);
 Route::middleware('auth:api')->group(function () {
-    
+
     Route::get('me', [AuthController::class, 'me']);
 
     Route::middleware('check.privilege:Groups_and_Permissions,read')->group(function () {
