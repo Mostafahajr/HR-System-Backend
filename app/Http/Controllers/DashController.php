@@ -11,6 +11,7 @@ use DeepCopy\Filter\Filter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SalaryController;
 use App\Http\Requests\SalaryRequest;
+use App\Models\GroupType;
 
 class DashController extends Controller
 {
@@ -30,20 +31,58 @@ class DashController extends Controller
 
         $sumSalaries=0;
         $employees = Employee::all();
-
+        $groupCount = GroupType::count();
         $offDaysType = OffDayType::find(1);
         $Salarys = $this->salaryController->calculate($request);
 
         $netSalary = $Salarys->getData(true);
+
+        $currentDate = Carbon::now()->format('Y-m-d');
+        $holidaysDates =$offDaysType->offDays->pluck('date')->toArray();
+        $holidays =$offDaysType->offDays->pluck('description')->toArray();
+        // for ($i=0; $i <count($holidaysDates) ; $i++) {
+        //     # code...
+        //     if ($holidaysDates[$i] >= $currentDate) {
+        //         # code...
+        //         $upcomingHolidaysDate []=  $holidaysDates[$i];
+        //         $upcomingHolidays []=$holidays[$i];
+        //     }
+
+
+        // }
+        $i = 0;
+        $topSalariesSorted = Employee::orderBy('salary', 'desc')->take(5)->get();
+
+
         foreach ($employees as $employee ) {
             # code...
+
             $sumSalaries +=$netSalary[$employee['id']]['salary'];
 
+
+            if ($i <count($holidaysDates)) {
+                # code...
+                if ($i < count($topSalariesSorted)) {
+                    # code...
+                    $topSalariesObj = [
+                        "name"=>$topSalariesSorted[$i]->name,
+                        "department"=>$topSalariesSorted[$i]->department->department_name,
+                        "salary"=>$topSalariesSorted[$i]->salary,
+                    ];
+                    $topSalariesEmployees []=$topSalariesObj;
+                }
+                if ($holidaysDates[$i] >= $currentDate) {
+                            # code...
+                            $upcomingHolidaysDate []=  $holidaysDates[$i];
+                            $upcomingHolidays []=$holidays[$i];
+                }
+                $i++;
+            }
         }
 
 
 
-        $currentDate = Carbon::now()->format('Y-m-d'); // Get the current date in 'Y-m-d' format
+         // Get the current date in 'Y-m-d' format
 
 
         // Get all attendance records
@@ -69,18 +108,7 @@ class DashController extends Controller
         // $offDays->offDayTypes()->attach($offDaysTypes->name);
 
 
-        $holidaysDates =$offDaysType->offDays->pluck('date')->toArray();
-        $holidays =$offDaysType->offDays->pluck('description')->toArray();
-        for ($i=0; $i <count($holidaysDates) ; $i++) {
-            # code...
-            if ($holidaysDates[$i] >= $currentDate) {
-                # code...
-                $upcomingHolidaysDate []=  $holidaysDates[$i];
-                $upcomingHolidays []=$holidays[$i];
-            }
 
-
-        }
 
         $dashRecords = [
             "employeeCount"=>count($employees),
@@ -88,7 +116,9 @@ class DashController extends Controller
             "holidays"=>$upcomingHolidays[0],
             "upcomingHoliday"=>$upcomingHolidaysDate[0],
             "numberOfHoliday"=>count($holidaysDates),
-            "sumOfSalaries"=>$sumSalaries
+            "sumOfSalaries"=>$sumSalaries,
+            "topSalaries"=>$topSalariesEmployees,
+            "groupCount"=>$groupCount,
         ];
 
 
