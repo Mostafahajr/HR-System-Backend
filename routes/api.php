@@ -26,11 +26,11 @@ Route::apiResource('off-days', OffDayController::class);
 
 
 Route::apiResource('attendances',AttendanceController::class);
-Route::apiResource('home',DashController::class);
+Route::get('home',[DashController::class,'getStatic']);
 
 
 Route::apiResource('employees', EmployeeController::class);
-Route::get('groups', [GroupController::class,'getStatic']);
+Route::apiResource('groups', GroupController::class);
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
