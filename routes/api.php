@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddNewAttendanceController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
@@ -13,7 +14,6 @@ use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashController;
 use App\Http\Controllers\GroupController;
-use App\Http\Controllers\GroupsAndPermissionsController;
 use App\Http\Controllers\PermissionsController;
 
 
@@ -50,7 +50,6 @@ Route::middleware('auth:api')->group(function () {
 Route::middleware(['auth:api', 'privilege:Admins,read'])->group(function () {
     Route::get('admins', [AuthController::class, 'index']);
 });
-Route::post('login', [AuthController::class, 'login']);
 
 
 //return calculated salary for all employees API
@@ -60,4 +59,10 @@ Route::get('/salaries/calculate', [SalaryController::class, 'calculate']);
     // Add other routes that need authentication and privilege checks here
 });
 
+Route::prefix('add-new-attendance')->group(function () {
+    Route::get('/', [AddNewAttendanceController::class, 'index']);
+    Route::post('/bulk-create', [AddNewAttendanceController::class, 'bulkCreate']);
+    Route::patch('/{id}', [AddNewAttendanceController::class, 'update']);
+    Route::delete('/{id}', [AddNewAttendanceController::class, 'destroy']);
+});
 
