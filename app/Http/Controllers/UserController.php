@@ -23,10 +23,13 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $validatedData = $request->validated(); // Use validated() method for the validated data
-        $user = User::create($validatedData);
 
-        return new UserResource($user); // Return the created user wrapped in UserResource
+        $users = $request->validated();
+
+        $newUser = User::create($users);
+
+
+        return new UserResource($newUser);
     }
 
     /**
@@ -49,7 +52,7 @@ class UserController extends Controller
         $validatedData = $request->validated(); // Use validated() method for the validated data
 
         $user->update($validatedData);
-
+        
         return new UserResource($user); // Return the updated user wrapped in UserResource
     }
 

@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
         // Create specific users
         User::create([
             'name' => 'Super Admin',
+            'username' => 'Super Admin',
             'email' => 'superadmin@example.com',
             'password' => bcrypt('password'),
             'group_type_id' => $groupTypes->get('Super Admins')->id,
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Manager',
+            'username' => 'Manager',
             'email' => 'manager@example.com',
             'password' => bcrypt('password'),
             'group_type_id' => $groupTypes->get('Managers')->id,
@@ -35,6 +37,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'Supervisor',
+            'username' => 'Supervisor',
             'email' => 'supervisor@example.com',
             'password' => bcrypt('password'),
             'group_type_id' => $groupTypes->get('Supervisors')->id,
@@ -42,6 +45,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'HR One',
+            'username' => 'HR One',
             'email' => 'hrone@example.com',
             'password' => bcrypt('password'),
             'group_type_id' => $groupTypes->get('HR')->id,
@@ -49,6 +53,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => 'HR Two',
+            'username' => 'HR Two',
             'email' => 'hrtwo@example.com',
             'password' => bcrypt('password'),
             'group_type_id' => $groupTypes->get('HR')->id,
