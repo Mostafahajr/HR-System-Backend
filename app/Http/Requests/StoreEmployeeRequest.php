@@ -32,9 +32,9 @@ class StoreEmployeeRequest extends FormRequest
             'salary' => 'required|numeric',
             'date_of_contract' => 'required|date|after_or_equal:2008-01-01',
             'department_id' => 'nullable|exists:departments,id',
-            'national_id' => 'required|string|max:10|unique:employees,national_id',
-            'arrival_time' => 'required|date_format:Y-m-d\TH:i:s',
-            'leave_time' => 'required|date_format:Y-m-d\TH:i:s|after:arrival_time' // Ensures leave_time is after arrival_time
+            'national_id' => 'required|string|max:14|unique:employees,national_id',
+            'arrival_time' => 'sometimes|required|date_format:H:i:s',
+            'leave_time' => 'sometimes|required|date_format:H:i:s|after:arrival_time',
         ];
     }
 }
