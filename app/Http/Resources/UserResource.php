@@ -17,10 +17,11 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'username' => $this->username,
             'email' => $this->email,
             'password'=>$this->password,
             'group_type_id'=>$this->group_type_id,
-            'group_name'=>$this->group_type->group_namegit,
+            'group_name'=>$this->groupType->group_name,
             'email_verified_at' => $this->email_verified_at ? $this->email_verified_at->toDateTimeString() : null,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
