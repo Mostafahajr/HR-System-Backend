@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female']);
             $table->date('DOB');
             $table->string('nationality');
-            $table->integer('national_id')->unique();
+            $table->string('national_id')->unique();
             $table->time('arrival_time'); // Changed from dateTime to time
             $table->time('leave_time');   // Changed from dateTime to time
             $table->decimal('salary', 10, 2);

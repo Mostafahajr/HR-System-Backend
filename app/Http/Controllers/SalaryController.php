@@ -172,7 +172,8 @@ class SalaryController extends Controller
         // Assuming $employee->arrival_time and $employee->leave_time are already Carbon instances
         $contractArrival = $this->setToTodayDate($employee->arrival_time);
         $contractLeave = $this->setToTodayDate($employee->leave_time);
-        // Assuming $attendance->arrival_time and $attendance->leave_time are Carbon instances
+
+        // Attendance times
         $arrivalTime = $this->setToTodayDate($attendance->arrival_time);
         $leaveTime = $this->setToTodayDate($attendance->leave_time);
 
@@ -182,6 +183,7 @@ class SalaryController extends Controller
 
         // Update attended days
         $employeeResult['attended_days']++;
+
         // Calculate penalty minutes if arrival is later than the contract time
         if ($arrivalTime->greaterThan($contractArrival)) {
             $penaltyMinutes = $contractArrival->diffInMinutes($arrivalTime);
@@ -193,13 +195,17 @@ class SalaryController extends Controller
             $bonusMinutes = $contractLeave->diffInMinutes($leaveTime);
             $employeeResult['total_bonus_minutes'] += $bonusMinutes;
         }
+
         // Add details for the specific date
         $employeeResult['daily_records'][] = [
             'date' => $attendance->date->format('Y-m-d'),
+            'arrival_time' => $attendance->arrival_time ? $attendance->arrival_time->format('H:i') : null,
+            'leave_time' => $attendance->leave_time ? $attendance->leave_time->format('H:i') : null,
             'penalty_minutes' => $penaltyMinutes,
             'bonus_minutes' => $bonusMinutes,
         ];
     }
+
 
 
 
