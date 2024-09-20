@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('attendance:create-daily-records')->dailyAt('00:01');
+        $schedule->command('offdays:add-weekends')->dailyAt('00:01');
     }
 
     /**
