@@ -84,11 +84,15 @@ class OffDayController extends Controller
             $offDay->offDayTypes()->attach($holidayType->id);
         }
 
-        // Update the off day's description
-        $offDay->update(['description' => $validatedData['description']]);
+        // Update the off day's date and description
+        $offDay->update([
+            'date' => $validatedData['date'],
+            'description' => $validatedData['description'],
+        ]);
 
         return new OffDayResource($offDay);
     }
+
 
     // DELETE an off day
     public function destroy($id)
