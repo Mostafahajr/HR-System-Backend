@@ -23,12 +23,11 @@ class UpdateUserRequest extends FormRequest
     {
         $userId = $this->route('id');
         return [
-            "name"=>['required','min:3','max:20','regex:/^[A-Za-z ]{3,}$/'],
-            "username"=>['required','min:3','max:20','regex:/^[A-Za-z (.|*|&|^|%|@)]{3,}$/'],
-            "email"=>['required','email'],
-            'password' => ['required','regex:/^[A-Za-z0-9(@|#|$|%)]{8,}$/'],
-            "group_type_id"=>['required']
+            "name" => ['required', 'min:3', 'max:20', 'regex:/^[A-Za-z ]{3,}$/'],
+            "username" => ['required', 'min:3', 'max:20', 'regex:/^[A-Za-z0-9 (.|*|&|^|%|@)]{3,}$/'],
+            "email" => ['required', 'email'],
+            'password' => ['regex:/^[A-Za-z0-9(@|#|$|%)]{8,}$/'],
+            "group_type_id" => ['required']
         ];
-
     }
 }

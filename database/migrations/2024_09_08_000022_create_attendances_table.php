@@ -17,10 +17,14 @@ return new class extends Migration
             $table->dateTime('arrival_time')->nullable();
             $table->dateTime('leave_time')->nullable();
             $table->date('date');
-            $table->foreignIdFor(Employee::class)->constrained()->onDelete('cascade'); 
+            $table->foreignIdFor(Employee::class)->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            // Add an index to the date column
+            $table->index('date');
         });
     }
+
     /**
      * Reverse the migrations.
      */
