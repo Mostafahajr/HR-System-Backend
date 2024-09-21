@@ -22,14 +22,14 @@ class AttendanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AttendanceRequest $request)
-    {
-        //
-        $valdiatedAttend = $request->validated();
-        $attend = Attendance::create($valdiatedAttend);
+    // public function store(AttendanceRequest $request)
+    // {
+    //     //
+    //     $valdiatedAttend = $request->validated();
+    //     $attend = Attendance::create($valdiatedAttend);
 
-        return new AttendanceResource($attend);
-    }
+    //     return new AttendanceResource($attend);
+    // }
 
     /**
      * Display the specified resource.
@@ -49,7 +49,7 @@ class AttendanceController extends Controller
         //
         $attend = Attendance::findOrFail($id);
         $valdiatedAttend = $request->validated();
-
+        
         $attend->update($valdiatedAttend);
 
         return new AttendanceResource($attend);
