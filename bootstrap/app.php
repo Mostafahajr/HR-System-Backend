@@ -3,6 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,5 +20,17 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (TokenExpiredException $e, $request) {
+            return response()->json(['error' => 'Token has expired'], 401);
+        });
+
+        // Handle TokenInvalidException globally
+        $exceptions->render(function (TokenInvalidException $e, $request) {
+            return response()->json(['error' => 'Token is invalid'], 401);
+        });
+
+        // Handle JWTException globally
+        $exceptions->render(function (JWTException $e, $request) {
+            return response()->json(['error' => 'Token is absent or malformed'], 401);
+        });
     })->create();

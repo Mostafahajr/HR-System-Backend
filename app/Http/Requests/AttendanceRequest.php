@@ -16,21 +16,8 @@ class AttendanceRequest extends FormRequest
 
     protected function onUpdate(){
         return [
-            "attendance_time"=>['required'],
             "arrival_time"=>['required'],
             "leave_time"=>['required'],
-            "date"=>['required'],
-            "employee_id"=>['required']
-        ];
-    }
-
-    protected function onCreate(){
-        return [
-            "attendance_time"=>['required'],
-            "arrival_time"=>['required'],
-            "leave_time"=>['required'],
-            "date"=>['required'],
-            "employee_id"=>['required']
         ];
     }
 
