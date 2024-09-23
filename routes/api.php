@@ -89,13 +89,13 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/{id}', [DepartmentController::class, 'show']);
         });
         Route::middleware('check.privilege:Departments,create')->group(function () {
-            Route::post('departments', [DepartmentController::class, 'store']);
+            Route::post('/', [DepartmentController::class, 'store']);
         });
         Route::middleware('check.privilege:Departments,update')->group(function () {
-            Route::put('departments', [DepartmentController::class, 'update']);
+            Route::put('{id}', [DepartmentController::class, 'update']);
         });
         Route::middleware('check.privilege:Departments,delete')->group(function () {
-            Route::delete('departments', [DepartmentController::class, 'destroy']);
+            Route::delete('/{id}', [DepartmentController::class, 'destroy']);
         });
     });
 
