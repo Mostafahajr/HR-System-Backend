@@ -14,7 +14,7 @@ class AttendanceSeeder extends Seeder
     {
         // Define the start date and the end date for August 2024
         $startDate = Carbon::createFromDate(2024, 8, 1);
-        $endDate = Carbon::createFromDate(2024, 8, 31); // End date is the last day of August
+        $endDate = Carbon::createFromDate(2024, 9, 31); // End date is the last day of August
 
         // Get all employees
         $employees = Employee::all();

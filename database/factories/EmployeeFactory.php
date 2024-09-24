@@ -39,16 +39,22 @@ class EmployeeFactory extends Factory
         return [
             'name' => $this->faker->name,
             'address' => $this->faker->address,
-            'phone_number' => $this->faker->phoneNumber,
+            'phone_number' => $this->generateValidPhoneNumber(),
             'gender' => $this->faker->randomElement(['male', 'female']),
             'DOB' => $dob->format('Y-m-d'),
             'nationality' => $this->faker->country,
-            'national_id' => $this->faker->numberBetween(100000000, 999999999),
+            'national_id' => $this->faker->numberBetween(10000000000000, 99999999999999),
             'arrival_time' => $arrivalTime->format('H:i:s'),
             'leave_time' => $leaveTime->format('H:i:s'),
             'salary' => $this->faker->randomFloat(2, 10000, 25000),
             'date_of_contract' => $dateOfContract->format('Y-m-d'),
             'department_id' => $departmentId,
         ];
+    }
+    private function generateValidPhoneNumber() {
+        // Generate a phone number that matches the pattern ^01[0-9]{9}$
+        $prefix = '01'; // Prefix for the phone number
+        $number = rand(100000000, 999999999); // Generate a random 9-digit number
+        return $prefix . $number; // Concatenate the prefix with the generated number
     }
 }
