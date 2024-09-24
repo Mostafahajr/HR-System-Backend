@@ -16,8 +16,6 @@ class AddWeekendOffDays extends Command
 
     public function handle()
     {
-        $this->info('Starting to process weekend off days...');
-
         $weekendType = OffDayType::firstOrCreate(
             ['name' => 'weekend'],
             ['description' => 'Regular weekend day off']
@@ -49,7 +47,6 @@ class AddWeekendOffDays extends Command
         // Add new weekend off days for next week
         $this->addWeekendOffDays($nextSaturday, $nextWeekEnd->addDay(), $vacationDays, $weekendType);
 
-        $this->info('Weekend off days have been processed successfully.');
     }
 
     private function addWeekendOffDays($start, $end, $vacationDays, $weekendType)

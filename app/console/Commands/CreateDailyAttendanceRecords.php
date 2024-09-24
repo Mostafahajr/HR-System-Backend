@@ -13,7 +13,6 @@ class CreateDailyAttendanceRecords extends Command
     public function handle(AddNewAttendanceController $controller)
     {
         $controller->bulkCreate();
-        $this->info('Daily attendance records created successfully.');
     }
 }
 /* run this command */

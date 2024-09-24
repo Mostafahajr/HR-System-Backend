@@ -1,5 +1,7 @@
 <?php
-namespace App\Http\Controllers; 
+
+namespace App\Http\Controllers;
+
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Department;
@@ -54,16 +56,28 @@ class AddNewAttendanceController extends Controller
         $employees = Employee::all();
         $date = Carbon::today()->toDateString();
 
-        $records = $employees->map(function ($employee) use ($date) {
-            return [
-                'employee_id' => $employee->id,
-                'date' => $date,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        })->toArray();
+        $records = [];
 
-        DB::table('attendances')->insert($records);
+        foreach ($employees as $employee) {
+            // Check if the attendance record for the employee and date already exists
+            $existingRecord = DB::table('attendances')
+                ->where('employee_id', $employee->id)
+                ->where('date', $date)
+                ->exists();
+
+            if (!$existingRecord) {
+                $records[] = [
+                    'employee_id' => $employee->id,
+                    'date' => $date,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        if (!empty($records)) {
+            DB::table('attendances')->insert($records);
+        }
 
         return response()->json(['message' => 'Daily attendance records created successfully']);
     }
