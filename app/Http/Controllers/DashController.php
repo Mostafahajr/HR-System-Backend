@@ -22,32 +22,40 @@ class DashController extends Controller
     }
 
     public function getEmployeeAndAttendanceRate()
-    {
-        $employees = Employee::all();
-        $currentDate = Carbon::now()->setTimezone('GMT+3')->format('Y-m-d');
+{
+    $employees = Employee::all();
+    $currentDate = Carbon::now()->setTimezone('GMT+3')->format('Y-m-d');
 
-        $attendances = Attendance::all();
+    $attendances = Attendance::all();
 
-        $filteredAttendances = $attendances->filter(function ($attendance) use ($currentDate) {
-            $cleanedDateString = strpos($attendance->date, ' UTC') !== false
-                ? substr($attendance->date, 0, strpos($attendance->date, ' UTC'))
-                : $attendance->date;
+    $filteredAttendances = $attendances->filter(function ($attendance) use ($currentDate) {
+        // Clean the date string by removing any " UTC" suffix
+        $cleanedDateString = strpos($attendance->date, ' UTC') !== false
+            ? substr($attendance->date, 0, strpos($attendance->date, ' UTC'))
+            : $attendance->date;
 
-            $parsedDate = Carbon::parse($cleanedDateString)->format('Y-m-d');
-            return $parsedDate === $currentDate;
-        });
+        // Parse the date and format it to 'Y-m-d'
+        $parsedDate = Carbon::parse($cleanedDateString)->format('Y-m-d');
 
-        $attendanceRate = count($employees) > 0
-            ? (count($filteredAttendances) / count($employees)) * 100 . "%"
-            : "0%";
+        // Check if the date matches the current date
+        return $parsedDate === $currentDate &&
+               !is_null($attendance->arrival_time) && 
+               !is_null($attendance->leave_time); // Ensure arrival and leave times are not null
+    });
 
-        $data = [
-            "employeeCount" => count($employees),
-            "attendanceRate" => $attendanceRate,
-        ];
+    // Calculate the attendance rate based on filtered attendances
+    $attendanceRate = count($employees) > 0
+        ? (count($filteredAttendances) / count($employees)) * 100 . "%"
+        : "0%";
 
-        return response()->json($data);
-    }
+    $data = [
+        "employeeCount" => count($employees),
+        "attendanceRate" => $attendanceRate,
+    ];
+
+    return response()->json($data);
+}
+
 
     public function getSalaries(SalaryRequest $request)
     {

@@ -54,7 +54,7 @@ class AddNewAttendanceController extends Controller
     public function bulkCreate()
     {
         $employees = Employee::all();
-        $date = Carbon::today()->toDateString();
+        $date = Carbon::now('GMT+3')->toDateString();
 
         $records = [];
 
