@@ -163,7 +163,7 @@ class SalaryController extends Controller
     {
         // Calculate total working hours in a day (contracted hours)
         $contractedHours = $employee->arrival_time->diffInHours($employee->leave_time);
-        return $employee->salary / ($workingDays * $contractedHours);
+        return $employee->salary / (22 * $contractedHours);
     }
 
     // Process attendance and calculate bonuses/penalties
@@ -205,10 +205,6 @@ class SalaryController extends Controller
             'bonus_minutes' => $bonusMinutes,
         ];
     }
-
-
-
-
 
 
     // Apply hour rules for bonus and penalty
